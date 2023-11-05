@@ -53,7 +53,21 @@ public class TripControllerIntegrationTests {
     }
 
     @Test
-    public void testThatUpdateBookReturnsHttpStatus200Ok() throws Exception {
+    public void testThatCreateTripReturnsHttpStatus400WhenInvalidTripCreated() throws Exception {
+        TripDto testInvalidTripA = TestDataUtil.createTestInvalidTripDtoA(null);
+        String tripJson = objectMapper.writeValueAsString(testInvalidTripA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/trips")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(tripJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatUpdateTripReturnsHttpStatus200Ok() throws Exception {
         TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
         TripEntity savedTripEntity = tripService.save(testTripEntityA);
 
@@ -67,6 +81,24 @@ public class TripControllerIntegrationTests {
                         .content(tripJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatUpdateTripReturnsHttpStatus400WhenInvalidUpdateTrip() throws Exception {
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
+        TripEntity savedTripEntity = tripService.save(testTripEntityA);
+
+        TripDto testInvalidTripA = TestDataUtil.createTestInvalidTripDtoA(null);
+        testInvalidTripA.setTripId(savedTripEntity.getTripId());
+        String tripJson = objectMapper.writeValueAsString(testInvalidTripA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/trips/" + savedTripEntity.getTripId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(tripJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
         );
     }
 
@@ -179,6 +211,24 @@ public class TripControllerIntegrationTests {
                         .content(tripJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateTripReturnsHttpStatus400WhenInvalidUpdateTrip() throws Exception {
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
+        tripService.save(testTripEntityA);
+
+        TripDto testTripA = TestDataUtil.createTestTripDtoA(null);
+        testTripA.setBodyOfWater("Lake UPDATED#@");
+        String tripJson = objectMapper.writeValueAsString(testTripA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/trips/" + testTripEntityA.getTripId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(tripJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
         );
     }
 

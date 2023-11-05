@@ -17,6 +17,8 @@ public interface TripService {
 
     Optional<TripEntity> findOne(Long tripId);
 
+    List<TripEntity> findByUserId(Long userId);
+
     boolean isExists(Long tripId);
 
     TripEntity partialUpdate(Long tripId, TripEntity tripEntity);

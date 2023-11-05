@@ -17,7 +17,7 @@ public final class TestDataUtil {
     public static UserEntity createTestUserEntityA() {
         return UserEntity.builder()
                 .username("jdoe2023")
-                .password("password1")
+                .password("password@1")
                 .email("jdoe@email.com")
                 .build();
     }
@@ -25,7 +25,7 @@ public final class TestDataUtil {
     public static UserDto createTestUserDtoA() {
         return UserDto.builder()
                 .username("jdoe2023")
-                .password("password1")
+                .password("password@1")
                 .email("jdoe@email.com")
                 .build();
     }
@@ -33,7 +33,7 @@ public final class TestDataUtil {
     public static UserEntity createTestUserB() {
         return UserEntity.builder()
                 .username("username999")
-                .password("password2")
+                .password("password@2")
                 .email("username999@email.com")
                 .build();
     }
@@ -41,7 +41,7 @@ public final class TestDataUtil {
     public static UserEntity createTestUserC() {
         return UserEntity.builder()
                 .username("someguy111")
-                .password("password3")
+                .password("password@3")
                 .email("someguy111@email.com")
                 .build();
     }

@@ -94,6 +94,22 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static TripEntity createTestInvalidTripBodyOfWaterA(final UserEntity userEntity) {
+        return TripEntity.builder()
+                .date(LocalDate.of(2023, 1, 1))
+                .bodyOfWater("Lake Fantasy#@")
+                .user(userEntity)
+                .build();
+    }
+
+    public static TripDto createTestInvalidTripDtoA(final UserDto userDto) {
+        return TripDto.builder()
+                .date(LocalDate.of(2023, 1, 1))
+                .bodyOfWater("Lake Fantasy#@")
+                .user(userDto)
+                .build();
+    }
+
     public static CatchEntity createTestCatchEntityA(final TripEntity tripEntity) {
         return CatchEntity.builder()
                 .time(LocalTime.of(14, 30))

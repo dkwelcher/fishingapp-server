@@ -72,7 +72,7 @@ public class UserControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.username").value("jdoe2023")
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.password").value("password1")
+                MockMvcResultMatchers.jsonPath("$.password").value("password@1")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.email").value("jdoe@email.com")
         );
@@ -99,7 +99,7 @@ public class UserControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].username").value("jdoe2023")
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$[0].password").value("password1")
+                MockMvcResultMatchers.jsonPath("$[0].password").value("password@1")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].email").value("jdoe@email.com")
         );
@@ -133,7 +133,7 @@ public class UserControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.username").value("jdoe2023")
         ).andExpect(
-                MockMvcResultMatchers.jsonPath("$.password").value("password1")
+                MockMvcResultMatchers.jsonPath("$.password").value("password@1")
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.email").value("jdoe@email.com")
         );

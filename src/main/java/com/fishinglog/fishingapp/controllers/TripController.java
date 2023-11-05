@@ -1,5 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
+import com.fishinglog.fishingapp.domain.dto.CatchDto;
 import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
@@ -77,12 +78,18 @@ public class TripController {
         );
     }
 
+    // GET /trips?id=123
     @GetMapping(path = "/trips")
-    public List<TripDto> listTrips() {
-        List<TripEntity> trips = tripService.findAll();
-        return trips.stream()
+    public ResponseEntity<List<TripDto>> listTrips(@RequestParam(value = "id") Long id) {
+        if(id == null) {
+            return new ResponseEntity<>((HttpStatus.BAD_REQUEST));
+        }
+
+        List<TripEntity> trips = tripService.findByUserId(id);
+        List<TripDto> tripDtos = trips.stream()
                 .map(tripMapper::mapTo)
                 .collect(Collectors.toList());
+        return new ResponseEntity<>(tripDtos, HttpStatus.OK);
     }
 
     @GetMapping(path = "/trips/{tripId}")

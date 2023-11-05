@@ -54,6 +54,14 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static UserDto createTestInvalidUserDtoA() {
+        return UserDto.builder()
+                .username("jdoe@2023")
+                .password("password1")
+                .email("jdoe@email.com")
+                .build();
+    }
+
     public static TripEntity createTestTripEntityA(final UserEntity userEntity) {
         return TripEntity.builder()
                 .date(LocalDate.of(2023, 1, 1))

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +29,10 @@ public class TripController {
 
     @PostMapping(path = "/trips")
     public ResponseEntity<TripDto> createTrip(@RequestBody TripDto tripDto) {
+        if(!isTripDtoValid(tripDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         TripEntity tripEntity = tripMapper.mapFrom(tripDto);
         TripEntity savedTripEntity = tripService.save(tripEntity);
         TripDto savedTrip = tripMapper.mapTo(savedTripEntity);
@@ -36,6 +41,10 @@ public class TripController {
 
     @PutMapping(path = "/trips/{tripId}")
     public ResponseEntity<TripDto> updateTrip(@PathVariable Long tripId, @RequestBody TripDto tripDto) {
+
+        if(!isTripDtoValid(tripDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if(!tripService.isExists(tripId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,6 +60,10 @@ public class TripController {
     public ResponseEntity<TripDto> partialUpdateTrip(
             @PathVariable("tripId") Long tripId,
             @RequestBody TripDto tripDto) {
+
+        if(!isTripDtoValid(tripDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if(!tripService.isExists(tripId)) {
             return new ResponseEntity<>((HttpStatus.NOT_FOUND));
@@ -85,5 +98,23 @@ public class TripController {
     public ResponseEntity deleteTrip(@PathVariable("tripId") Long tripId) {
         tripService.delete(tripId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private boolean isTripDtoValid(TripDto trip) {
+        return isDateValid(trip.getDate()) &&
+                isBodyOfWaterValid(trip.getBodyOfWater());
+    }
+
+    private boolean isDateValid(LocalDate date) {
+        return date != null;
+    }
+
+    private boolean isBodyOfWaterValid(String bodyOfWater) {
+        if(bodyOfWater == null || bodyOfWater.trim().isEmpty()) {
+            return false;
+        }
+
+        String regex = "^[A-Za-z0-9 ]+$";
+        return bodyOfWater.matches(regex);
     }
 }

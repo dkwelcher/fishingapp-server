@@ -48,6 +48,9 @@ public class CatchServiceImpl implements CatchService {
     }
 
     @Override
+    public List<CatchEntity> findByTripId(Long tripId) { return catchRepository.findByTripId(tripId); }
+
+    @Override
     public boolean isExists(Long catchId) {
         return catchRepository.existsById(catchId);
     }

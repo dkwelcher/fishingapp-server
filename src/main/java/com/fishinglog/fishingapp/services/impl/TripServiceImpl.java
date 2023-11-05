@@ -53,6 +53,9 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public List<TripEntity> findByUserId(Long userId) { return tripRepository.findByUserId(userId); }
+
+    @Override
     public boolean isExists(Long tripId) {
         return tripRepository.existsById(tripId);
     }

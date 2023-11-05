@@ -58,6 +58,21 @@ public class UserControllerIntegrationTests {
     }
 
     @Test
+    public void testThatCreateUserReturnsHttp400BadRequestWhenUserInvalid() throws Exception {
+        UserEntity testInvalidUserA = TestDataUtil.createTestInvalidUserUsernameA();
+        testInvalidUserA.setId(null);
+        String userJson = objectMapper.writeValueAsString(testInvalidUserA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
     public void testThatCreateUserSuccessfullyReturnsSavedUser() throws Exception {
         UserDto testUserA = TestDataUtil.createTestUserDtoA();
         testUserA.setId(null);

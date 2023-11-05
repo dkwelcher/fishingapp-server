@@ -114,7 +114,10 @@ public class TripController {
             return false;
         }
 
-        String regex = "^[A-Za-z0-9 ]+$";
+        int minLength = 1;
+        int maxLength = 100;
+
+        String regex = "^[A-Za-z0-9 ]{" + minLength + "," + maxLength + "}$";
         return bodyOfWater.matches(regex);
     }
 }

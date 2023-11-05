@@ -57,6 +57,10 @@ public class UserController {
             @PathVariable("id") Long id,
             @RequestBody UserDto userDto) {
 
+        if(!isUserDtoValid(userDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         if(!userService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -74,6 +78,10 @@ public class UserController {
     public ResponseEntity<UserDto> partialUpdate(
             @PathVariable("id") Long id,
             @RequestBody UserDto userDto) {
+
+        if(!isUserDtoValid(userDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if(!userService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

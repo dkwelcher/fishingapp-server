@@ -51,6 +51,20 @@ public class CatchControllerIntegrationTests {
     }
 
     @Test
+    public void testThatCreateCatchReturnsHttpStatus400WhenInvalidCatchCreated() throws Exception {
+        CatchDto testInvalidCatchA = TestDataUtil.createTestInvalidCatchDtoA(null);
+        String catchJson = objectMapper.writeValueAsString(testInvalidCatchA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/catches")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(catchJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
     public void testThatUpdateCatchReturnsHttpStatus200Ok() throws Exception {
         CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(null);
         CatchEntity savedCatchEntity = catchService.save(testCatchEntityA);
@@ -65,6 +79,24 @@ public class CatchControllerIntegrationTests {
                         .content(catchJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatUpdateCatchReturnsHttpStatus400WhenInvalidUpdateCatch() throws Exception {
+        CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(null);
+        CatchEntity savedCatchEntity = catchService.save(testCatchEntityA);
+
+        CatchDto testInvalidCatchA = TestDataUtil.createTestInvalidCatchDtoA(null);
+        testInvalidCatchA.setCatchId(savedCatchEntity.getCatchId());
+        String catchJson = objectMapper.writeValueAsString(testInvalidCatchA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/catches/" + savedCatchEntity.getCatchId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(catchJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
         );
     }
 
@@ -226,6 +258,25 @@ public class CatchControllerIntegrationTests {
                         .content(catchJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatPartialUpdateCatchReturnsHttpStatus400WhenInvalidCatchUpdate() throws Exception {
+        CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(null);
+        catchService.save(testCatchEntityA);
+
+        CatchDto testCatchA = TestDataUtil.createTestCatchDtoA(null);
+        testCatchA.setLatitude(200.11);
+        testCatchA.setLongitude(-200.99);
+        String catchJson = objectMapper.writeValueAsString(testCatchA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/catches/" + testCatchEntityA.getCatchId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(catchJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
         );
     }
 

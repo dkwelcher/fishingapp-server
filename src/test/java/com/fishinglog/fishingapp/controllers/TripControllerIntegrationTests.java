@@ -3,8 +3,10 @@ package com.fishinglog.fishingapp.controllers;
 import com.fishinglog.fishingapp.TestDataUtil;
 import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
+import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.services.TripService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fishinglog.fishingapp.services.UserService;
 import jakarta.transaction.Transactional;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,9 @@ public class TripControllerIntegrationTests {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     public void testThatCreateTripReturnsHttpStatus201Created() throws Exception {
@@ -146,8 +151,13 @@ public class TripControllerIntegrationTests {
 
     @Test
     public void testThatListTripReturnsHttpStatus200Ok() throws Exception {
+        UserEntity testUserEntityA = TestDataUtil.createTestUserEntityA();
+        userService.save(testUserEntityA);
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(testUserEntityA);
+        tripService.save(testTripEntityA);
+
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/trips")
+                MockMvcRequestBuilders.get("/trips?id=" + testUserEntityA.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -156,11 +166,13 @@ public class TripControllerIntegrationTests {
 
     @Test
     public void testThatListTripsReturnsTrips() throws Exception {
-        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
+        UserEntity testUserEntityA = TestDataUtil.createTestUserEntityA();
+        userService.save(testUserEntityA);
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(testUserEntityA);
         tripService.save(testTripEntityA);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/trips")
+                MockMvcRequestBuilders.get("/trips?id=" + testUserEntityA.getId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].tripId").value(testTripEntityA.getTripId())

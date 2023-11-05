@@ -170,4 +170,34 @@ public final class TestDataUtil {
                 .build();
     }
 
+    public static CatchEntity createTestInvalidCatchEntityA(final TripEntity tripEntity) {
+        return CatchEntity.builder()
+                .time(LocalTime.of(14, 30))
+                .latitude(91.06)
+                .longitude(-181.21)
+                .species("Striped Bass")
+                .lureOrBait("Blue Herring")
+                .weatherCondition("cloudy")
+                .airTemperature(78)
+                .waterTemperature(72)
+                .windSpeed(10)
+                .trip(tripEntity)
+                .build();
+    }
+
+    public static CatchDto createTestInvalidCatchDtoA(final TripDto tripDto) {
+        return CatchDto.builder()
+                .time(LocalTime.of(14, 30))
+                .latitude(314.06)
+                .longitude(-181.21)
+                .species("Striped Bass")
+                .lureOrBait("Blue Herring")
+                .weatherCondition("cloudy")
+                .airTemperature(78)
+                .waterTemperature(72)
+                .windSpeed(10)
+                .trip(tripDto)
+                .build();
+    }
+
 }

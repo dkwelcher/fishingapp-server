@@ -26,6 +26,10 @@ public class UserController {
 
     @PostMapping(path = "/users")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+        if(!isUserDtoValid(user)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         UserEntity userentity = userMapper.mapFrom(user);
         UserEntity savedUserEntity = userService.save(userentity);
         return new ResponseEntity<>(userMapper.mapTo(savedUserEntity), HttpStatus.CREATED);
@@ -87,5 +91,35 @@ public class UserController {
     public ResponseEntity deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private boolean isUserDtoValid(UserDto user) {
+        return isUsernameValid(user.getUsername()) &&
+                isPasswordValid(user.getPassword());
+    }
+
+    private boolean isUsernameValid(String username) {
+        if(username == null) {
+            return false;
+        }
+
+        int minLength = 3;
+        int maxLength = 20;
+
+        String regex = "^[A-Za-z0-9_-]{" + minLength + "," + maxLength + "}$";
+        return username.matches(regex);
+    }
+
+    private boolean isPasswordValid(String password) {
+        if(password == null) {
+            return false;
+        }
+
+        int minLength = 6;
+        int maxLength = 64;
+
+        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-]).{" + minLength + "," + maxLength + "}$";
+
+        return password.matches(regex);
     }
 }

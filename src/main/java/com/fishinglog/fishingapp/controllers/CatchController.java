@@ -77,12 +77,18 @@ public class CatchController {
         );
     }
 
+    // GET /catches?tripId=123
     @GetMapping(path = "/catches")
-    public List<CatchDto> listCatches() {
-        List<CatchEntity> catches = catchService.findAll();
-        return catches.stream()
+    public ResponseEntity<List<CatchDto>> listCatches(@RequestParam(value = "tripId") Long tripId) {
+        if(tripId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<CatchEntity> catches = catchService.findByTripId(tripId);
+        List<CatchDto> catchDtos = catches.stream()
                 .map(catchMapper::mapTo)
                 .collect(Collectors.toList());
+        return new ResponseEntity<>(catchDtos, HttpStatus.OK);
     }
 
     @GetMapping(path = "/catches/{catchId}")

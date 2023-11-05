@@ -188,6 +188,20 @@ public class UserControllerIntegrationTests {
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test public void testThatFullUpdateUserReturnsHttpStatus400WhenUserDtoInvalid() throws Exception {
+        UserEntity testUserEntityA = TestDataUtil.createTestUserEntityA();
+        UserEntity savedUser = userService.save(testUserEntityA);
+
+        UserDto testInvalidUserDtoA = TestDataUtil.createTestInvalidUserDtoA();
+        String userDtoJson = objectMapper.writeValueAsString(testInvalidUserDtoA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/users/" + savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
     @Test
     public void testThatFullUpdateUpdatesExistingUser() throws Exception {
         UserEntity testUserEntityA = TestDataUtil.createTestUserEntityA();
@@ -227,6 +241,23 @@ public class UserControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userDtoJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testThatPartialUpdateExistingUserReturnsHttpStatus400WhenUserDtoInvalid() throws Exception {
+        UserEntity testUserEntityA = TestDataUtil.createTestUserEntityA();
+        UserEntity savedUser = userService.save(testUserEntityA);
+
+        UserDto testUserDtoA = TestDataUtil.createTestUserDtoA();
+        testUserDtoA.setUsername("INVALID#USERNAME");
+        testUserDtoA.setPassword("invalidPassword1");
+        String userDtoJson = objectMapper.writeValueAsString(testUserDtoA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/users/" + savedUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userDtoJson)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

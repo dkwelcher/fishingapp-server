@@ -7,9 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CatchRepository extends CrudRepository<CatchEntity, Long>,
         PagingAndSortingRepository<CatchEntity, Long> {
+    @Query("SELECT c FROM CatchEntity c WHERE c.trip.id = :tripId")
+    List<CatchEntity> findByTripId(Long tripId);
 
     @Modifying
     @Query("DELETE FROM CatchEntity t WHERE t.trip.id = :id")

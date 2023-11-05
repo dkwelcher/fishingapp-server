@@ -17,6 +17,8 @@ public interface CatchService {
 
     Optional<CatchEntity> findOne(Long catchId);
 
+    List<CatchEntity> findByTripId(Long tripId);
+
     boolean isExists(Long catchId);
 
     CatchEntity partialUpdate(Long catchId, CatchEntity catchEntity);

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +29,10 @@ public class CatchController {
 
     @PostMapping(path = "/catches")
     public ResponseEntity<CatchDto> createCatch(@RequestBody CatchDto catchDto) {
+        if(!isCatchDtoValid(catchDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         CatchEntity catchEntity = catchMapper.mapFrom(catchDto);
         CatchEntity savedCatchEntity = catchService.save(catchEntity);
         CatchDto savedCatch = catchMapper.mapTo(savedCatchEntity);
@@ -36,6 +41,10 @@ public class CatchController {
 
     @PutMapping(path = "/catches/{catchId}")
     public ResponseEntity<CatchDto> updateCatch(@PathVariable Long catchId, @RequestBody CatchDto catchDto) {
+
+        if(!isCatchDtoValid(catchDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if(!catchService.isExists(catchId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -51,6 +60,10 @@ public class CatchController {
     public ResponseEntity<CatchDto> partialUpdateTrip(
             @PathVariable("catchId") Long catchId,
             @RequestBody CatchDto catchDto) {
+
+        if(!isCatchDtoValid(catchDto)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         if(!catchService.isExists(catchId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -85,5 +98,33 @@ public class CatchController {
     public ResponseEntity deleteTrip(@PathVariable("catchId") Long catchId) {
         catchService.delete(catchId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private boolean isCatchDtoValid(CatchDto catchDto) {
+        return isTimeValid(catchDto.getTime()) &&
+                isCoordinatesValid(catchDto.getLatitude(), catchDto.getLongitude());
+    }
+
+    private boolean isTimeValid(LocalTime time) {
+        return time != null;
+    }
+
+    private boolean isCoordinatesValid(Double latitude, Double longitude) {
+        if(latitude == null || longitude == null) {
+            return false;
+        }
+
+        boolean isLatitudeValid = false;
+        boolean isLongitudeValid = false;
+
+        if(latitude >= -90 && latitude <= 90) {
+            isLatitudeValid = true;
+        }
+
+        if(longitude >= -180 && longitude <= 180) {
+            isLongitudeValid = true;
+        }
+
+        return isLatitudeValid && isLongitudeValid;
     }
 }

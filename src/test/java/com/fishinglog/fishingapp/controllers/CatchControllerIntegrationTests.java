@@ -3,8 +3,10 @@ package com.fishinglog.fishingapp.controllers;
 import com.fishinglog.fishingapp.TestDataUtil;
 import com.fishinglog.fishingapp.domain.dto.CatchDto;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
+import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.services.CatchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fishinglog.fishingapp.services.TripService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -35,6 +37,9 @@ public class CatchControllerIntegrationTests {
 
     @Autowired
     private CatchService catchService;
+
+    @Autowired
+    private TripService tripService;
 
     @Test
     public void testThatCreateCatchReturnsHttpStatus201Created() throws Exception {
@@ -179,8 +184,13 @@ public class CatchControllerIntegrationTests {
 
     @Test
     public void testThatListCatchReturnsHttpStatus200Ok() throws Exception {
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
+        tripService.save(testTripEntityA);
+        CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(testTripEntityA);
+        catchService.save(testCatchEntityA);
+
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/catches")
+                MockMvcRequestBuilders.get("/catches?tripId=" + testTripEntityA.getTripId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
@@ -189,11 +199,13 @@ public class CatchControllerIntegrationTests {
 
     @Test
     public void testThatListCatchesReturnsCatches() throws Exception {
-        CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(null);
+        TripEntity testTripEntityA = TestDataUtil.createTestTripEntityA(null);
+        tripService.save(testTripEntityA);
+        CatchEntity testCatchEntityA = TestDataUtil.createTestCatchEntityA(testTripEntityA);
         catchService.save(testCatchEntityA);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/catches")
+                MockMvcRequestBuilders.get("/catches?tripId=" + testTripEntityA.getTripId())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].catchId").value(testCatchEntityA.getCatchId())

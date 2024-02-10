@@ -114,6 +114,7 @@ public class UserController {
         int minLength = 3;
         int maxLength = 20;
 
+        // Username must only contain letters and digits
         String regex = "^[A-Za-z0-9_-]{" + minLength + "," + maxLength + "}$";
         return username.matches(regex);
     }
@@ -126,7 +127,9 @@ public class UserController {
         int minLength = 6;
         int maxLength = 64;
 
-        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%&*()_+=|<>?{}\\[\\]~-]).{" + minLength + "," + maxLength + "}$";
+        // Password must have at least one letter, one digit, and one special character
+        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[-!@#$%&*()_+=|<>?{}\\[\\]~]).{" + minLength + "," + maxLength + "}$";
+
 
         return password.matches(regex);
     }

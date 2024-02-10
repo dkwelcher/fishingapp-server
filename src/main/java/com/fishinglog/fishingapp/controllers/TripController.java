@@ -7,6 +7,7 @@ import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.mappers.TripMapper;
 import com.fishinglog.fishingapp.services.TripService;
 import lombok.extern.java.Log;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -87,6 +88,26 @@ public class TripController {
         }
 
         List<TripEntity> trips = tripService.findByUserId(userId);
+        List<TripDto> tripDtos = trips.stream()
+                .map(tripMapper::mapTo)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(tripDtos, HttpStatus.OK);
+    }
+
+    // GET /trips&date?id=123&date=2024-01-01
+    @GetMapping(path = "/trips&date")
+    public ResponseEntity<List<TripDto>> listTripsByUserIdAndDate(
+            @RequestParam(value = "id") Long userId,
+            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        if (userId == null || date == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<TripEntity> trips;
+        trips = tripService.findByUserIdAndDate(userId, date);
+
         List<TripDto> tripDtos = trips.stream()
                 .map(tripMapper::mapTo)
                 .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import com.fishinglog.fishingapp.domain.dto.CatchDto;
 import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
+import com.fishinglog.fishingapp.mappers.TripMapper;
 import com.fishinglog.fishingapp.services.TripService;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -80,15 +81,16 @@ public class TripController {
 
     // GET /trips?id=123
     @GetMapping(path = "/trips")
-    public ResponseEntity<List<TripDto>> listTrips(@RequestParam(value = "id") Long id) {
-        if(id == null) {
-            return new ResponseEntity<>((HttpStatus.BAD_REQUEST));
+    public ResponseEntity<List<TripDto>> listTrips(@RequestParam(value = "id") Long userId) {
+        if(userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        List<TripEntity> trips = tripService.findByUserId(id);
+        List<TripEntity> trips = tripService.findByUserId(userId);
         List<TripDto> tripDtos = trips.stream()
                 .map(tripMapper::mapTo)
                 .collect(Collectors.toList());
+
         return new ResponseEntity<>(tripDtos, HttpStatus.OK);
     }
 

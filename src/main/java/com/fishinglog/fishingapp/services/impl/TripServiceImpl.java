@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,6 +55,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<TripEntity> findByUserId(Long userId) { return tripRepository.findByUserId(userId); }
+
+    public List<TripEntity> findByUserIdAndDate(Long userId, LocalDate date) { return tripRepository.findByUserIdAndDate(userId, date); }
 
     @Override
     public boolean isExists(Long tripId) {

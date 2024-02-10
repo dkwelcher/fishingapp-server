@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -18,4 +19,6 @@ public interface TripRepository extends CrudRepository<TripEntity, Long>,
     void deleteByUserId(Long id);
 
     List<TripEntity> findByUserId(Long userId);
+
+    List<TripEntity> findByUserIdAndDate(Long userId, LocalDate date);
 }

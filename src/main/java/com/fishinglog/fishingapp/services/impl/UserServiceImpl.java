@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    public Optional<UserEntity> findByUsername(String username) { return userRepository.findByUsername(username);}
+
     @Override
     public boolean isExists(Long id) {
         return userRepository.existsById(id);

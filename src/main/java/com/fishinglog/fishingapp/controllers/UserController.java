@@ -52,6 +52,15 @@ public class UserController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+//    @GetMapping(path = "/users/{id}")
+//    public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
+//        Optional<UserEntity> foundUser = userService.findByUsername(username);
+//        return foundUser.map(userEntity -> {
+//            UserDto userDto = userMapper.mapTo(userEntity);
+//            return new ResponseEntity<>(userDto, HttpStatus.OK);
+//        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//    }
+
     @PutMapping(path = "/users/{id}")
     public ResponseEntity<UserDto> fullUpdateAuthor(
             @PathVariable("id") Long id,

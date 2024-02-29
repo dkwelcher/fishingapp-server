@@ -1,11 +1,11 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.dto.CatchDto;
 import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
-import com.fishinglog.fishingapp.mappers.TripMapper;
 import com.fishinglog.fishingapp.services.TripService;
+import com.fishinglog.fishingapp.services.auth.OwnershipService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -21,17 +21,33 @@ import java.util.stream.Collectors;
 @Log
 public class TripController {
 
-    private TripService tripService;
+    private final TripService tripService;
 
-    private Mapper<TripEntity, TripDto> tripMapper;
+    private final Mapper<TripEntity, TripDto> tripMapper;
 
-    public TripController(TripService tripService, Mapper<TripEntity, TripDto> tripMapper) {
+    private final OwnershipService ownershipService;
+
+    public TripController(TripService tripService, Mapper<TripEntity, TripDto> tripMapper, OwnershipService ownershipService) {
         this.tripService = tripService;
         this.tripMapper = tripMapper;
+        this.ownershipService = ownershipService;
     }
 
+    // POST /trips?userId=123
     @PostMapping(path = "/trips")
-    public ResponseEntity<TripDto> createTrip(@RequestBody TripDto tripDto) {
+    public ResponseEntity<TripDto> createTrip(
+            @RequestParam(value = "userId") Long userId,
+            @RequestBody TripDto tripDto,
+            HttpServletRequest request) {
+
+        if(!userId.equals(tripDto.getUser().getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(!isTripDtoValid(tripDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,8 +58,21 @@ public class TripController {
         return new ResponseEntity<>(savedTrip, HttpStatus.CREATED);
     }
 
+    // PUT /trips/789?userId=123
     @PutMapping(path = "/trips/{tripId}")
-    public ResponseEntity<TripDto> updateTrip(@PathVariable Long tripId, @RequestBody TripDto tripDto) {
+    public ResponseEntity<TripDto> updateTrip(
+            @RequestParam(value = "userId") Long userId,
+            @PathVariable Long tripId,
+            @RequestBody TripDto tripDto,
+            HttpServletRequest request) {
+
+        if(!userId.equals(tripDto.getUser().getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
         if(!isTripDtoValid(tripDto)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -59,50 +88,19 @@ public class TripController {
         return new ResponseEntity<>(tripMapper.mapTo(updatedTripEntity), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/trips/{tripId}")
-    public ResponseEntity<TripDto> partialUpdateTrip(
-            @PathVariable("tripId") Long tripId,
-            @RequestBody TripDto tripDto) {
-
-        if(!isTripDtoValid(tripDto)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        if(!tripService.isExists(tripId)) {
-            return new ResponseEntity<>((HttpStatus.NOT_FOUND));
-        }
-
-        TripEntity tripEntity = tripMapper.mapFrom(tripDto);
-        TripEntity updatedTripEntity = tripService.partialUpdate(tripId, tripEntity);
-        return new ResponseEntity<>(
-                tripMapper.mapTo(updatedTripEntity),
-                HttpStatus.OK
-        );
-    }
-
-    // GET /trips?id=123
+    // GET /trips?userId=123&date=2024-01-01
     @GetMapping(path = "/trips")
-    public ResponseEntity<List<TripDto>> listTrips(@RequestParam(value = "id") Long userId) {
-        if(userId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        List<TripEntity> trips = tripService.findByUserId(userId);
-        List<TripDto> tripDtos = trips.stream()
-                .map(tripMapper::mapTo)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(tripDtos, HttpStatus.OK);
-    }
-
-    // GET /trips&date?id=123&date=2024-01-01
-    @GetMapping(path = "/trips&date")
     public ResponseEntity<List<TripDto>> listTripsByUserIdAndDate(
-            @RequestParam(value = "id") Long userId,
-            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            HttpServletRequest request) {
 
         if (userId == null || date == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         List<TripEntity> trips;
@@ -115,19 +113,19 @@ public class TripController {
         return new ResponseEntity<>(tripDtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/trips/{tripId}")
-    public ResponseEntity<TripDto> getTrip(@PathVariable("tripId") Long tripId) {
-        Optional<TripEntity> foundTrip = tripService.findOne(tripId);
-        return foundTrip.map(tripEntity -> {
-            TripDto tripDto = tripMapper.mapTo(tripEntity);
-            return new ResponseEntity<>(tripDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
+    // DELETE /trips/789?userId=123
     @DeleteMapping(path = "/trips/{tripId}")
-    public ResponseEntity deleteTrip(@PathVariable("tripId") Long tripId) {
+    public ResponseEntity<HttpStatus> deleteTrip(
+            @RequestParam(value = "userId") Long userId,
+            @PathVariable("tripId") Long tripId,
+            HttpServletRequest request) {
+
+        if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         tripService.delete(tripId);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private boolean isTripDtoValid(TripDto trip) {

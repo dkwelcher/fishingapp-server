@@ -1,6 +1,7 @@
 package com.fishinglog.fishingapp.controllers;
 
 import com.fishinglog.fishingapp.domain.dto.CatchDto;
+import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.services.CatchService;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -132,11 +132,38 @@ public class CatchController {
 
     private boolean isCatchDtoValid(CatchDto catchDto) {
         return isTimeValid(catchDto.getTime()) &&
-                isCoordinatesValid(catchDto.getLatitude(), catchDto.getLongitude());
+                isSpeciesValid(catchDto.getSpecies()) &&
+                isLureOrBaitValid(catchDto.getLureOrBait()) &&
+                isCoordinatesValid(catchDto.getLatitude(), catchDto.getLongitude()) &&
+                isWeatherConditionValid(catchDto.getWeatherCondition()) &&
+                isAirTemperatureValid(catchDto.getAirTemperature()) &&
+                isWaterTemperatureValid(catchDto.getWaterTemperature()) &&
+                isWindSpeedValid(catchDto.getWindSpeed()) &&
+                isTripDtoValid(catchDto.getTrip());
     }
 
-    private boolean isTimeValid(LocalTime time) {
-        return time != null;
+    private boolean isTimeValid(LocalTime time) { return time != null; }
+
+    private boolean isSpeciesValid(String species) {
+        if (species == null || species.isEmpty()) {
+            return false;
+        }
+
+        // Letters and spaces only
+        String regex = "^[a-zA-Z ]*$";
+
+        return species.matches(regex) && species.length() <= 50;
+    }
+
+    private boolean isLureOrBaitValid(String lureOrBait) {
+        if (lureOrBait == null || lureOrBait.isEmpty()) {
+            return false;
+        }
+
+        // Letters and spaces only
+        String regex = "^[a-zA-Z ]*$";
+
+        return lureOrBait.matches(regex) && lureOrBait.length() <= 50;
     }
 
     private boolean isCoordinatesValid(Double latitude, Double longitude) {
@@ -157,4 +184,41 @@ public class CatchController {
 
         return isLatitudeValid && isLongitudeValid;
     }
+
+    private boolean isWeatherConditionValid(String weatherCondition) {
+        if (weatherCondition == null || weatherCondition.isEmpty()) {
+            return false;
+        }
+
+        // Letters and spaces only
+        String regex = "^[a-zA-Z ]*$";
+
+        return weatherCondition.matches(regex) && weatherCondition.length() <= 25;
+    }
+
+    private boolean isAirTemperatureValid(Integer airTemperature) {
+        if (airTemperature == null) {
+            return false;
+        }
+
+        return airTemperature >= -50 && airTemperature <= 150;
+    }
+
+    private boolean isWaterTemperatureValid(Integer waterTemperature) {
+        if (waterTemperature == null) {
+            return false;
+        }
+
+        return waterTemperature >= -50 && waterTemperature <= 150;
+    }
+
+    private boolean isWindSpeedValid(Integer airTemperature) {
+        if (airTemperature == null) {
+            return false;
+        }
+
+        return airTemperature >= 0 && airTemperature <= 100;
+    }
+
+    private boolean isTripDtoValid(TripDto tripDto) { return tripDto.getTripId() != null; }
 }

@@ -58,6 +58,12 @@ public class TripServiceImpl implements TripService {
 
     public List<TripEntity> findByUserIdAndDate(Long userId, LocalDate date) { return tripRepository.findByUserIdAndDate(userId, date); }
 
+    public List<TripEntity> findLastSixMonthsByUserIdAndDate(Long userId) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(6).plusDays(1);
+        return tripRepository.findLastSixMonthsByUserIdAndDate(userId, startDate, endDate);
+    }
+
     @Override
     public boolean isExists(Long tripId) {
         return tripRepository.existsById(tripId);

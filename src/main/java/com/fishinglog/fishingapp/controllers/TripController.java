@@ -92,7 +92,7 @@ public class TripController {
     @GetMapping(path = "/trips")
     public ResponseEntity<List<TripDto>> listTripsByUserIdAndDate(
             @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             HttpServletRequest request) {
 
         if (userId == null || date == null) {
@@ -105,6 +105,30 @@ public class TripController {
 
         List<TripEntity> trips;
         trips = tripService.findByUserIdAndDate(userId, date);
+
+        List<TripDto> tripDtos = trips.stream()
+                .map(tripMapper::mapTo)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(tripDtos, HttpStatus.OK);
+    }
+
+    // GET /trips/sixMonths?userId=123
+    @GetMapping(path = "/trips/sixMonths")
+    public ResponseEntity<List<TripDto>> listTripsLastSixMonthsByUserId(
+            @RequestParam(value = "userId") Long userId,
+            HttpServletRequest request) {
+
+        if (userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        List<TripEntity> trips;
+        trips = tripService.findLastSixMonthsByUserIdAndDate(userId);
 
         List<TripDto> tripDtos = trips.stream()
                 .map(tripMapper::mapTo)

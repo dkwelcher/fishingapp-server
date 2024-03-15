@@ -21,4 +21,7 @@ public interface TripRepository extends CrudRepository<TripEntity, Long>,
     List<TripEntity> findByUserId(Long userId);
 
     List<TripEntity> findByUserIdAndDate(Long userId, LocalDate date);
+
+    @Query("SELECT t FROM TripEntity t WHERE t.user.id = :userId AND t.date >= :startDate AND t.date <= :endDate")
+    List<TripEntity> findLastSixMonthsByUserIdAndDate(Long userId, LocalDate startDate, LocalDate endDate);
 }

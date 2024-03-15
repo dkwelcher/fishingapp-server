@@ -22,6 +22,7 @@ public interface TripService {
 
     List<TripEntity> findByUserIdAndDate(Long userId, LocalDate date);
 
+    List<TripEntity> findLastSixMonthsByUserIdAndDate(Long userId);
 
     boolean isExists(Long tripId);
 

@@ -1,5 +1,6 @@
 package com.fishinglog.fishingapp;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FishingAppApplication {
 
 	public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.load();
+		String apiKey = dotenv.get("WEATHER_API_KEY");
+		System.setProperty("api.key", apiKey);
+
 		SpringApplication.run(FishingAppApplication.class, args);
 	}
 

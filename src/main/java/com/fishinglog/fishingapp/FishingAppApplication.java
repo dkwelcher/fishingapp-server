@@ -11,6 +11,8 @@ public class FishingAppApplication {
 		Dotenv dotenv = Dotenv.load();
 		String apiKey = dotenv.get("WEATHER_API_KEY");
 		System.setProperty("api.key", apiKey);
+		String jwtKey = dotenv.get("JWT_KEY");
+		System.setProperty("jwt.key", jwtKey);
 
 		SpringApplication.run(FishingAppApplication.class, args);
 	}

@@ -15,10 +15,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * Service implementation for managing user entities.
+ *
+ * @since 2024-02-19
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private TripRepository tripRepository;
@@ -29,11 +34,23 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    /**
+     * Saves a user entity.
+     *
+     * @param userEntity The user entity to save.
+     * @return The saved user entity.
+     */
     @Override
     public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
 
+    /**
+     * Retrieves all user entities.
+     *
+     * @return A list of all user entities.
+     */
     @Override
     public List<UserEntity> findAll() {
         return StreamSupport.stream(userRepository
@@ -44,18 +61,43 @@ public class UserServiceImpl implements UserService {
                 );
     }
 
+    /**
+     * Finds a user entity by its ID.
+     *
+     * @param id The ID of the user entity to find.
+     * @return An Optional containing the found user entity or an empty Optional if not found.
+     */
     @Override
     public Optional<UserEntity> findOne(Long id) {
         return userRepository.findById(id);
     }
 
+    /**
+     * Finds a user entity by username.
+     *
+     * @param username The username of the user to find.
+     * @return An Optional containing the found user entity or an empty Optional if not found.
+     */
     public Optional<UserEntity> findByUsername(String username) { return userRepository.findByUsername(username);}
 
+    /**
+     * Checks if a user entity exists by its ID.
+     *
+     * @param id The ID of the user entity to check.
+     * @return True if the entity exists, false otherwise.
+     */
     @Override
     public boolean isExists(Long id) {
         return userRepository.existsById(id);
     }
 
+    /**
+     * Performs a partial update on a user entity.
+     *
+     * @param id The ID of the user entity to update.
+     * @param userEntity The user entity with updated fields.
+     * @return The updated user entity.
+     */
     @Override
     public UserEntity partialUpdate(Long id, UserEntity userEntity) {
         userEntity.setId(id);
@@ -68,6 +110,11 @@ public class UserServiceImpl implements UserService {
         }).orElseThrow(() -> new RuntimeException("User does not exist"));
     }
 
+    /**
+     * Deletes a user entity and its associated trips and catches by the user's ID.
+     *
+     * @param id The ID of the user entity to delete.
+     */
     @Override
     @Transactional
     public void delete(Long id) {

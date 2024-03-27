@@ -11,6 +11,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * Service implementation to fetch weather data from an external API.
+ *
+ * @since 2024-03-16
+ */
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
@@ -20,6 +25,13 @@ public class WeatherServiceImpl implements WeatherService {
     @Value("${api.key}")
     private String apiKey;
 
+    /**
+     * Retrieves the current weather conditions for a specific latitude and longitude.
+     *
+     * @param latitude  The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @return A WeatherDto object containing the current weather conditions.
+     */
     @Override
     public WeatherDto getCurrentWeather(double latitude, double longitude) {
 
@@ -49,6 +61,12 @@ public class WeatherServiceImpl implements WeatherService {
         return new WeatherDto(weatherCondition, airTemperature, waterTemperature, windSpeed);
     }
 
+    /**
+     * Determines the weather condition based on the weather code.
+     *
+     * @param currentWeather The current weather data.
+     * @return A string describing the weather condition.
+     */
     private static String getWeatherCondition(WeatherResponse.Current currentWeather) {
         int code = currentWeather.getCondition().getCode();
         String weatherCondition;

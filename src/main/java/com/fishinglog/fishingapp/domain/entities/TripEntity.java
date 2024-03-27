@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Entity representation of a fishing trip, mapping to the 'trips' table in the database.
+ *
+ * @since 2024-10-31
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

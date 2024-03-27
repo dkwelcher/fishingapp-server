@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
+/**
+ * Entity representation of a fishing catch, mapping to the 'catches' table in the database.
+ *
+ * @since 2024-10-31
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

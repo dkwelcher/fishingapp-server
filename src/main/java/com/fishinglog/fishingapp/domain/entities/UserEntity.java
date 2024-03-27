@@ -13,6 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Entity representation of a user, mapping to the 'users' table in the database.
+ *
+ * @since 2024-10-31
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

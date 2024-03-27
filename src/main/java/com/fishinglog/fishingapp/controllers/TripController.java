@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for handling trip-related operations.
+ *
+ * @since 2024-03-15
+ */
 @RestController
 @Log
 public class TripController {
@@ -33,6 +38,14 @@ public class TripController {
         this.ownershipService = ownershipService;
     }
 
+    /**
+     * Creates a new trip record.
+     *
+     * @param userId The ID of the user creating the trip.
+     * @param tripDto Data transfer object representing the trip to be created.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing the created trip or an error status.
+     */
     // POST /trips?userId=123
     @PostMapping(path = "/trips")
     public ResponseEntity<TripDto> createTrip(
@@ -58,6 +71,15 @@ public class TripController {
         return new ResponseEntity<>(savedTrip, HttpStatus.CREATED);
     }
 
+    /**
+     * Updates an existing trip record.
+     *
+     * @param userId The ID of the user updating the trip.
+     * @param tripId The ID of the trip to update.
+     * @param tripDto Data transfer object representing the updated trip details.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing the updated trip or an error status.
+     */
     // PUT /trips/789?userId=123
     @PutMapping(path = "/trips/{tripId}")
     public ResponseEntity<TripDto> updateTrip(
@@ -88,6 +110,14 @@ public class TripController {
         return new ResponseEntity<>(tripMapper.mapTo(updatedTripEntity), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a list of trips for a user on a specific date.
+     *
+     * @param userId The ID of the user whose trips are being queried.
+     * @param date The date for which trips are being retrieved.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing a list of TripDto objects or an error status.
+     */
     // GET /trips?userId=123&date=2024-01-01
     @GetMapping(path = "/trips")
     public ResponseEntity<List<TripDto>> listTripsByUserIdAndDate(
@@ -113,6 +143,13 @@ public class TripController {
         return new ResponseEntity<>(tripDtos, HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a list of trips for a user over the last six months.
+     *
+     * @param userId The ID of the user whose trips are being queried.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing a list of TripDto objects or an error status.
+     */
     // GET /trips/sixMonths?userId=123
     @GetMapping(path = "/trips/sixMonths")
     public ResponseEntity<List<TripDto>> listTripsLastSixMonthsByUserId(
@@ -137,6 +174,14 @@ public class TripController {
         return new ResponseEntity<>(tripDtos, HttpStatus.OK);
     }
 
+    /**
+     * Deletes a trip record.
+     *
+     * @param userId The ID of the user deleting the trip.
+     * @param tripId The ID of the trip to be deleted.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity indicating the result of the deletion operation.
+     */
     // DELETE /trips/789?userId=123
     @DeleteMapping(path = "/trips/{tripId}")
     public ResponseEntity<HttpStatus> deleteTrip(

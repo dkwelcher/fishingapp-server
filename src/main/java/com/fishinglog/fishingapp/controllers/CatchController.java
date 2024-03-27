@@ -16,6 +16,11 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for handling requests related to fishing catches.
+ *
+ * @since 2024-03-14
+ */
 @RestController
 @Log
 public class CatchController {
@@ -32,6 +37,14 @@ public class CatchController {
         this.ownershipService = ownershipService;
     }
 
+    /**
+     * Creates a new fishing catch entry.
+     *
+     * @param userId The ID of the user creating the catch.
+     * @param catchDto The data transfer object containing catch details.
+     * @param request The HTTP request object.
+     * @return A response entity with the created catch data or an error status.
+     */
     // POST /catches?userId=123
     @PostMapping(path = "/catches")
     public ResponseEntity<CatchDto> createCatch(
@@ -57,6 +70,15 @@ public class CatchController {
         return new ResponseEntity<>(savedCatch, HttpStatus.CREATED);
     }
 
+    /**
+     * Updates an existing fishing catch entry.
+     *
+     * @param userId The ID of the user updating the catch.
+     * @param catchId The ID of the catch to update.
+     * @param catchDto The data transfer object containing the updated catch details.
+     * @param request The HTTP request object.
+     * @return A response entity with the updated catch data or an error status.
+     */
     // PUT /catches/789?userId=123
     @PutMapping(path = "/catches/{catchId}")
     public ResponseEntity<CatchDto> updateCatch(
@@ -87,6 +109,14 @@ public class CatchController {
         return new ResponseEntity<>(catchMapper.mapTo(updatedCatchEntity), HttpStatus.OK);
     }
 
+    /**
+     * Retrieves a list of catches associated with a specific trip.
+     *
+     * @param userId The ID of the user retrieving the catches.
+     * @param tripId The ID of the trip associated with the catches.
+     * @param request The HTTP request object.
+     * @return A response entity with a list of catches or an error status.
+     */
     // GET /catches?userId=123&tripId=789
     @GetMapping(path = "/catches")
     public ResponseEntity<List<CatchDto>> listCatches(
@@ -110,6 +140,14 @@ public class CatchController {
         return new ResponseEntity<>(catchDtos, HttpStatus.OK);
     }
 
+    /**
+     * Deletes a specific fishing catch entry.
+     *
+     * @param userId The ID of the user deleting the catch.
+     * @param catchId The ID of the catch to be deleted.
+     * @param request The HTTP request object.
+     * @return A response entity indicating the status of the operation.
+     */
     // DELETE /catches/789?userId=123
     @DeleteMapping(path = "/catches/{catchId}")
     public ResponseEntity<HttpStatus> deleteTrip(

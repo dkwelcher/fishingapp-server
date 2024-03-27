@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling weather-related requests.
+ *
+ * @since 2024-03-19
+ */
 @RestController
 @Log
 public class WeatherController {
@@ -24,6 +29,15 @@ public class WeatherController {
         this.ownershipService = ownershipService;
     }
 
+    /**
+     * Retrieves the current weather conditions based on latitude and longitude.
+     *
+     * @param userId The ID of the user requesting the weather information.
+     * @param latitude The latitude coordinate for the weather request.
+     * @param longitude The longitude coordinate for the weather request.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing the WeatherDto with the current weather conditions or an error status.
+     */
     // GET /weather?userId=123&latitude=11.11&longitude=11.11
     @GetMapping(path = "/weather")
     public ResponseEntity<WeatherDto> getCurrentWeather(

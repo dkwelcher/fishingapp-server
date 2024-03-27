@@ -7,16 +7,32 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper class for converting between CatchEntity and CatchDto objects.
+ *
+ * @since 2024-02-10
+ */
 @Component
 public class CatchMapper implements Mapper<CatchEntity, CatchDto> {
 
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructs a CatchMapper with the necessary ModelMapper.
+     *
+     * @param modelMapper The ModelMapper used for object mapping operations.
+     */
     @Autowired
     public CatchMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * Maps a CatchEntity to a CatchDto.
+     *
+     * @param catchEntity The CatchEntity to map from.
+     * @return The mapped CatchDto.
+     */
     @Override
     public CatchDto mapTo(CatchEntity catchEntity) {
         CatchDto catchDto = modelMapper.map(catchEntity, CatchDto.class);
@@ -33,6 +49,12 @@ public class CatchMapper implements Mapper<CatchEntity, CatchDto> {
         return catchDto;
     }
 
+    /**
+     * Maps a CatchDto back to a CatchEntity.
+     *
+     * @param catchDto The CatchDto to map from.
+     * @return The mapped CatchEntity.
+     */
     @Override
     public CatchEntity mapFrom(CatchDto catchDto) {
         return modelMapper.map(catchDto, CatchEntity.class);

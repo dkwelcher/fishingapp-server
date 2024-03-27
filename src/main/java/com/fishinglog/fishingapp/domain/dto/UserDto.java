@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object for a user, encapsulating all relevant details.
+ *
+ * @since 2023-10-31
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling feedback submissions.
+ *
+ * @since 2024-03-19
+ */
 @RestController
 @Log
 public class FeedbackController {
@@ -25,6 +30,14 @@ public class FeedbackController {
         this.ownershipService = ownershipService;
     }
 
+    /**
+     * Collects feedback from users.
+     *
+     * @param userId The ID of the user submitting the feedback.
+     * @param feedbackDto The data transfer object containing the feedback details.
+     * @param request The HTTP request object.
+     * @return A response entity indicating the status of the feedback collection.
+     */
     // POST /feedback?userId=123
     @PostMapping(path = "/feedback")
     public ResponseEntity<HttpStatus> collectFeedback(

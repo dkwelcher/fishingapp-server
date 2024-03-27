@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object for feedback submitted by user.
+ *
+ * @since 2024-03-19
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

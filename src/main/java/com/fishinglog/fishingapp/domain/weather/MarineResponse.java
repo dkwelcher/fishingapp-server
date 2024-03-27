@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Represents the marine data response, encapsulating the current weather conditions.
+ *
+ * @since 2024-03-16
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

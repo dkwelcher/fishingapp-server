@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object for a weather conditions, encapsulating all relevant details.
+ *
+ * @since 2024-03-16
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

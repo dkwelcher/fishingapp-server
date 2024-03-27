@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
+/**
+ * Data Transfer Object for a fishing catch, encapsulating all relevant details.
+ *
+ * @since 2023-10-31
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

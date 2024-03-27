@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents the weather data response, encapsulating the current weather conditions.
+ *
+ * @since 2024-03-16
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

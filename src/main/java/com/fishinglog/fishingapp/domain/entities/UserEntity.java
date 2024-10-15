@@ -36,6 +36,8 @@ public class UserEntity implements UserDetails {
 
     private String email;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(columnDefinition = "SMALLINT")
     private Role role;
 
     @Override

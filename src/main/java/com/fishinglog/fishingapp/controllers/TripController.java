@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Controller for handling trip-related operations.
  *
- * @since 2024-03-15
+ * @since 2024-10-15
  */
 @RestController
 @Log

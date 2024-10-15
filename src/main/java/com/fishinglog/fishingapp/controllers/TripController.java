@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.dto.TripDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.services.TripService;

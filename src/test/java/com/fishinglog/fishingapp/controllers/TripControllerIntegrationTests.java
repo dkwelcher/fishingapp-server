@@ -1,17 +1,14 @@
 package com.fishinglog.fishingapp.controllers;
 
 import com.fishinglog.fishingapp.TestDataUtil;
-import com.fishinglog.fishingapp.domain.dto.TripDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.services.TripService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fishinglog.fishingapp.services.UserService;
-import jakarta.transaction.Transactional;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.print.attribute.standard.Media;
 import java.time.LocalDate;
 
 @SpringBootTest

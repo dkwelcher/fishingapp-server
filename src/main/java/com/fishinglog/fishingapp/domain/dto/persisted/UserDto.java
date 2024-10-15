@@ -1,4 +1,4 @@
-package com.fishinglog.fishingapp.domain.dto;
+package com.fishinglog.fishingapp.domain.dto.persisted;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

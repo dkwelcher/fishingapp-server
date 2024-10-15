@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.validation;
 
-import com.fishinglog.fishingapp.domain.dto.CatchDto;
-import com.fishinglog.fishingapp.domain.dto.TripDto;
-import com.fishinglog.fishingapp.domain.dto.UserDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.CatchDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.TripDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.UserDto;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

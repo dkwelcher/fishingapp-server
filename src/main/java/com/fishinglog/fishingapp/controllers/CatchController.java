@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.dto.CatchDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.CatchDto;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.services.CatchService;

@@ -1,7 +1,7 @@
 package com.fishinglog.fishingapp.mappers;
 
-import com.fishinglog.fishingapp.domain.dto.TripDto;
-import com.fishinglog.fishingapp.domain.dto.UserDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.TripDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.UserDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

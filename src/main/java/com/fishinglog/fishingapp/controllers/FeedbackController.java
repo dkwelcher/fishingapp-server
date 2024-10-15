@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.dto.FeedbackDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.FeedbackDto;
 import com.fishinglog.fishingapp.services.FeedbackService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;

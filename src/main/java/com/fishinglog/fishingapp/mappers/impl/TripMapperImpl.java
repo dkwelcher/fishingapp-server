@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.mappers.impl;
 
-import com.fishinglog.fishingapp.domain.dto.TripDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.TripDto;
 import com.fishinglog.fishingapp.domain.entities.TripEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.fishinglog.fishingapp.domain.dto;
+package com.fishinglog.fishingapp.domain.dto.persisted;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

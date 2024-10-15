@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MarineResponse {
+public class MarineResponseDto {
 
     private Forecast forecast;
 

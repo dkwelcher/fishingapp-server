@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.services.impl;
 
-import com.fishinglog.fishingapp.domain.weather.MarineResponse;
+import com.fishinglog.fishingapp.domain.weather.MarineResponseDto;
 import com.fishinglog.fishingapp.domain.weather.WeatherDto;
-import com.fishinglog.fishingapp.domain.weather.WeatherResponse;
+import com.fishinglog.fishingapp.domain.weather.WeatherResponseDto;
 import com.fishinglog.fishingapp.services.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,8 +37,8 @@ public class WeatherServiceImpl implements WeatherService {
 
         final String weatherUrl = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + latitude + "," + longitude;
 
-        WeatherResponse weatherResponse = restTemplate.getForObject(weatherUrl, WeatherResponse.class);
-        WeatherResponse.Current currentWeather = weatherResponse.getCurrent();
+        WeatherResponseDto weatherResponse = restTemplate.getForObject(weatherUrl, WeatherResponseDto.class);
+        WeatherResponseDto.Current currentWeather = weatherResponse.getCurrent();
 
         String weatherCondition = getWeatherCondition(currentWeather);
 
@@ -47,12 +47,12 @@ public class WeatherServiceImpl implements WeatherService {
 
         final String marineUrl = "http://api.weatherapi.com/v1/marine.json?key=" + apiKey + "&q=" + latitude + "," + longitude;
 
-        MarineResponse marineResponse = restTemplate.getForObject(marineUrl, MarineResponse.class);
-        List<MarineResponse.ForecastDay> forecastDays = marineResponse.getForecast().getForecastday();
+        MarineResponseDto marineResponse = restTemplate.getForObject(marineUrl, MarineResponseDto.class);
+        List<MarineResponseDto.ForecastDay> forecastDays = marineResponse.getForecast().getForecastday();
 
         double waterTemperature = -900;
         if(!forecastDays.isEmpty()) {
-            List<MarineResponse.Hour> hours = forecastDays.get(0).getHour();
+            List<MarineResponseDto.Hour> hours = forecastDays.get(0).getHour();
             if(!hours.isEmpty()) {
                 waterTemperature = hours.get(0).getWater_temp_f();
             }
@@ -67,7 +67,7 @@ public class WeatherServiceImpl implements WeatherService {
      * @param currentWeather The current weather data.
      * @return A string describing the weather condition.
      */
-    private static String getWeatherCondition(WeatherResponse.Current currentWeather) {
+    private static String getWeatherCondition(WeatherResponseDto.Current currentWeather) {
         int code = currentWeather.getCondition().getCode();
         String weatherCondition;
         if(code == 1000) {

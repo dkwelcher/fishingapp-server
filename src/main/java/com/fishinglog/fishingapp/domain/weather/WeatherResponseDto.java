@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WeatherResponse {
+public class WeatherResponseDto {
 
     private Current current;
 

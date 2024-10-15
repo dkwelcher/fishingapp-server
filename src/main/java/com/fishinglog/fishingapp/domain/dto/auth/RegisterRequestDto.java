@@ -1,4 +1,4 @@
-package com.fishinglog.fishingapp.domain.auth;
+package com.fishinglog.fishingapp.domain.dto.auth;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.weather.WeatherDto;
+import com.fishinglog.fishingapp.domain.dto.weather.WeatherDto;
 import com.fishinglog.fishingapp.services.WeatherService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;

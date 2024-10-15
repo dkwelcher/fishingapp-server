@@ -1,9 +1,9 @@
 package com.fishinglog.fishingapp.services.auth.impl;
 
 import com.fishinglog.fishingapp.domain.Role;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationResponseDto;
-import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationResponseDto;
+import com.fishinglog.fishingapp.domain.dto.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.repositories.UserRepository;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;

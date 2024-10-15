@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.services.impl;
 
-import com.fishinglog.fishingapp.domain.weather.MarineResponseDto;
-import com.fishinglog.fishingapp.domain.weather.WeatherDto;
-import com.fishinglog.fishingapp.domain.weather.WeatherResponseDto;
+import com.fishinglog.fishingapp.domain.dto.weather.MarineResponseDto;
+import com.fishinglog.fishingapp.domain.dto.weather.WeatherDto;
+import com.fishinglog.fishingapp.domain.dto.weather.WeatherResponseDto;
 import com.fishinglog.fishingapp.services.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

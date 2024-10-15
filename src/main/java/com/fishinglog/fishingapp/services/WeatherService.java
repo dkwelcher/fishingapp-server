@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.services;
 
-import com.fishinglog.fishingapp.domain.weather.WeatherDto;
+import com.fishinglog.fishingapp.domain.dto.weather.WeatherDto;
 
 /**
  * Service interface for accessing weather information.

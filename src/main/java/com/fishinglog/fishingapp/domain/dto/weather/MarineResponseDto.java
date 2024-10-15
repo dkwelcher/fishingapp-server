@@ -1,4 +1,4 @@
-package com.fishinglog.fishingapp.domain.weather;
+package com.fishinglog.fishingapp.domain.dto.weather;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

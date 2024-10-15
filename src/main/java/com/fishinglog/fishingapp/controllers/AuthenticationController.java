@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationResponseDto;
-import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationResponseDto;
+import com.fishinglog.fishingapp.domain.dto.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.services.auth;
 
-import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationResponseDto;
-import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationResponseDto;
+import com.fishinglog.fishingapp.domain.dto.auth.RegisterRequestDto;
 
 /**
  * Interface defining service operations for handling authentication and registration logic.

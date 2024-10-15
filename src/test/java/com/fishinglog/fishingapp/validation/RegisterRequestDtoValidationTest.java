@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.validation;
 
-import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
+import com.fishinglog.fishingapp.domain.dto.auth.RegisterRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

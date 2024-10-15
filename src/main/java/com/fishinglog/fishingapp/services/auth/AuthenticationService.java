@@ -3,7 +3,7 @@ package com.fishinglog.fishingapp.services.auth;
 import com.fishinglog.fishingapp.domain.Role;
 import com.fishinglog.fishingapp.domain.auth.AuthenticationResponse;
 import com.fishinglog.fishingapp.domain.auth.AuthenticationRequest;
-import com.fishinglog.fishingapp.domain.auth.RegisterRequest;
+import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 /**
  * Service class for handling authentication and registration logic.
  *
- * @since 2024-02-19
+ * @since 2024-10-15
  */
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class AuthenticationService {
      * @param request The registration request containing the user's credentials.
      * @return An {@link AuthenticationResponse} containing the new user's JWT token.
      */
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequestDto request) {
         var user = UserEntity.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode((request.getPassword())))

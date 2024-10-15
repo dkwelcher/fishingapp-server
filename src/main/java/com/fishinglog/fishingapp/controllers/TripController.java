@@ -6,6 +6,7 @@ import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.services.TripService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +50,7 @@ public class TripController {
     @PostMapping(path = "/trips")
     public ResponseEntity<TripDto> createTrip(
             @RequestParam(value = "userId") Long userId,
-            @RequestBody TripDto tripDto,
+            @Valid @RequestBody TripDto tripDto,
             HttpServletRequest request) {
 
         if(!userId.equals(tripDto.getUser().getId())) {
@@ -59,10 +59,6 @@ public class TripController {
 
         if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        if(!isTripDtoValid(tripDto)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         TripEntity tripEntity = tripMapper.mapFrom(tripDto);
@@ -85,7 +81,7 @@ public class TripController {
     public ResponseEntity<TripDto> updateTrip(
             @RequestParam(value = "userId") Long userId,
             @PathVariable Long tripId,
-            @RequestBody TripDto tripDto,
+            @Valid @RequestBody TripDto tripDto,
             HttpServletRequest request) {
 
         if(!userId.equals(tripDto.getUser().getId())) {
@@ -94,10 +90,6 @@ public class TripController {
 
         if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        if(!isTripDtoValid(tripDto)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         if(!tripService.isExists(tripId)) {
@@ -195,26 +187,5 @@ public class TripController {
 
         tripService.delete(tripId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    private boolean isTripDtoValid(TripDto trip) {
-        return isDateValid(trip.getDate()) &&
-                isBodyOfWaterValid(trip.getBodyOfWater());
-    }
-
-    private boolean isDateValid(LocalDate date) {
-        return date != null;
-    }
-
-    private boolean isBodyOfWaterValid(String bodyOfWater) {
-        if(bodyOfWater == null || bodyOfWater.trim().isEmpty()) {
-            return false;
-        }
-
-        int minLength = 1;
-        int maxLength = 100;
-
-        String regex = "^[A-Za-z0-9 ]{" + minLength + "," + maxLength + "}$";
-        return bodyOfWater.matches(regex);
     }
 }

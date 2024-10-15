@@ -1,26 +1,29 @@
 package com.fishinglog.fishingapp.mappers.impl;
 
 import com.fishinglog.fishingapp.domain.dto.persisted.CatchDto;
+import com.fishinglog.fishingapp.domain.dto.persisted.UserDto;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Implementation of the Mapper interface for converting between CatchEntity and CatchDto objects.
+ * Mapper class for converting between CatchEntity and CatchDto objects.
  *
- * @since 2023-10-31
+ * @since 2024-02-10
  */
 @Component
 public class CatchMapperImpl implements Mapper<CatchEntity, CatchDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     /**
-     * Constructs a CatchMapperImpl with the necessary ModelMapper.
+     * Constructs a CatchMapper with the necessary ModelMapper.
      *
      * @param modelMapper The ModelMapper used for object mapping operations.
      */
+    @Autowired
     public CatchMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
@@ -33,7 +36,18 @@ public class CatchMapperImpl implements Mapper<CatchEntity, CatchDto> {
      */
     @Override
     public CatchDto mapTo(CatchEntity catchEntity) {
-        return modelMapper.map(catchEntity, CatchDto.class);
+        CatchDto catchDto = modelMapper.map(catchEntity, CatchDto.class);
+
+        if(catchEntity.getTrip().getUser() != null) {
+            UserDto userDto = new UserDto();
+            userDto.setId(catchEntity.getTrip().getUser().getId());
+            userDto.setUsername(catchEntity.getTrip().getUser().getUsername());
+            userDto.setPassword(null);
+            userDto.setEmail(null);
+
+            catchDto.getTrip().setUser(userDto);
+        }
+        return catchDto;
     }
 
     /**

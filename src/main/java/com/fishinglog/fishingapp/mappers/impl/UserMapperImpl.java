@@ -4,36 +4,47 @@ import com.fishinglog.fishingapp.domain.dto.persisted.UserDto;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Implementation of the Mapper interface for converting between UserEntity and UserDto objects.
+ * Mapper class for converting between UserEntity and UserDto objects.
  *
- * @since 2023-10-31
+ * @since 2024-02-10
  */
 @Component
 public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     /**
-     * Constructs a UserMapperImpl with the necessary ModelMapper.
+     * Constructs a UserMapper with the necessary ModelMapper.
      *
      * @param modelMapper The ModelMapper used for object mapping operations.
      */
+    @Autowired
     public UserMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
     /**
-     * Maps a UserEntity to a UserDto.
+     * Maps a UserEntity to a UserDto. This mapping ensures that sensitive
+     * information like passwords is not included in the UserDto.
      *
      * @param userEntity The UserEntity to map from.
-     * @return The mapped UserDto.
+     * @return The mapped UserDto with protected fields.
      */
     @Override
     public UserDto mapTo(UserEntity userEntity) {
-        return modelMapper.map(userEntity, UserDto.class);
+        UserDto protectedUserDto = modelMapper.map(userEntity, UserDto.class);
+
+        if (userEntity.getId() != null) {
+            protectedUserDto.setId(userEntity.getId());
+            protectedUserDto.setUsername(userEntity.getUsername());
+            protectedUserDto.setPassword(null);
+            protectedUserDto.setEmail(null);
+        }
+        return protectedUserDto;
     }
 
     /**

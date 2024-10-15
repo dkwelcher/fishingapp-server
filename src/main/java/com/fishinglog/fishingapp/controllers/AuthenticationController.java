@@ -1,7 +1,7 @@
 package com.fishinglog.fishingapp.controllers;
 
 import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationResponse;
+import com.fishinglog.fishingapp.domain.auth.AuthenticationResponseDto;
 import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;
 import jakarta.validation.Valid;
@@ -31,7 +31,7 @@ public class AuthenticationController {
      * @return A response entity containing the authentication response or a bad request error.
      */
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<AuthenticationResponseDto> register(
             @Valid @RequestBody RegisterRequestDto request) {
 
         return ResponseEntity.ok(service.register(request));
@@ -44,7 +44,7 @@ public class AuthenticationController {
      * @return A response entity containing the authentication response.
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<AuthenticationResponseDto> authenticate(
             @RequestBody AuthenticationRequestDto request) {
         return ResponseEntity.ok(service.authenticate(request));
     }

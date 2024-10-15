@@ -46,11 +46,16 @@ public class WeatherController {
             @RequestParam(value = "longitude") double longitude,
             HttpServletRequest request) {
 
+        // This is a temporary measure until the Weather service is fixed.
+        return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+
+        /*
         if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         WeatherDto weatherDto = weatherService.getCurrentWeather(latitude, longitude);
         return new ResponseEntity<>(weatherDto, HttpStatus.OK);
+        */
     }
 }

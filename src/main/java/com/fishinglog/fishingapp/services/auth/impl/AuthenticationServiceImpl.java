@@ -1,4 +1,4 @@
-package com.fishinglog.fishingapp.services.auth;
+package com.fishinglog.fishingapp.services.auth.impl;
 
 import com.fishinglog.fishingapp.domain.Role;
 import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
@@ -6,6 +6,8 @@ import com.fishinglog.fishingapp.domain.auth.AuthenticationResponseDto;
 import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.repositories.UserRepository;
+import com.fishinglog.fishingapp.services.auth.AuthenticationService;
+import com.fishinglog.fishingapp.services.auth.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,24 +16,19 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service class for handling authentication and registration logic.
+ * See {@link AuthenticationService}.
  *
  * @since 2024-10-15
  */
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    /**
-     * Registers a new user with the provided credentials.
-     *
-     * @param request The registration request containing the user's credentials.
-     * @return An {@link AuthenticationResponseDto} containing the new user's JWT token.
-     */
     public AuthenticationResponseDto register(RegisterRequestDto request) {
         var user = UserEntity.builder()
                 .username(request.getUsername())
@@ -46,12 +43,6 @@ public class AuthenticationService {
                 .build();
     }
 
-    /**
-     * Authenticates a user based on the provided credentials.
-     *
-     * @param request The authentication request containing the user's credentials.
-     * @return An {@link AuthenticationResponseDto} containing the user's JWT token along with user details.
-     */
     public AuthenticationResponseDto authenticate(AuthenticationRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,7 +51,7 @@ public class AuthenticationService {
                 )
         );
         var user = repository.findByUsername(request.getUsername())
-                .orElseThrow(); // should catch and handle exception (not done here)
+                .orElseThrow(); // TODO: should catch and handle exception
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponseDto.builder()
                 .token(jwtToken)

@@ -1,12 +1,12 @@
 package com.fishinglog.fishingapp.controllers;
 
 import com.fishinglog.fishingapp.domain.dto.CatchDto;
-import com.fishinglog.fishingapp.domain.dto.TripDto;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
 import com.fishinglog.fishingapp.mappers.Mapper;
 import com.fishinglog.fishingapp.services.CatchService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Controller for handling requests related to fishing catches.
  *
- * @since 2024-03-14
+ * @since 2024-10-15
  */
 @RestController
 @Log
@@ -49,7 +49,7 @@ public class CatchController {
     @PostMapping(path = "/catches")
     public ResponseEntity<CatchDto> createCatch(
             @RequestParam(value = "userId") Long userId,
-            @RequestBody CatchDto catchDto,
+            @Valid @RequestBody CatchDto catchDto,
             HttpServletRequest request) {
 
         if(userId == null) {
@@ -58,10 +58,6 @@ public class CatchController {
 
         if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        if(!isCatchDtoValid(catchDto)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         CatchEntity catchEntity = catchMapper.mapFrom(catchDto);
@@ -84,7 +80,7 @@ public class CatchController {
     public ResponseEntity<CatchDto> updateCatch(
             @RequestParam(value = "userId") Long userId,
             @PathVariable Long catchId,
-            @RequestBody CatchDto catchDto,
+            @Valid @RequestBody CatchDto catchDto,
             HttpServletRequest request) {
 
         if(userId == null) {
@@ -93,10 +89,6 @@ public class CatchController {
 
         if(!ownershipService.doesRequestUsernameMatchTokenUsername(userId, request)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        if(!isCatchDtoValid(catchDto)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         if(!catchService.isExists(catchId)) {
@@ -167,96 +159,4 @@ public class CatchController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    private boolean isCatchDtoValid(CatchDto catchDto) {
-        return isTimeValid(catchDto.getTime()) &&
-                isSpeciesValid(catchDto.getSpecies()) &&
-                isLureOrBaitValid(catchDto.getLureOrBait()) &&
-                isCoordinatesValid(catchDto.getLatitude(), catchDto.getLongitude()) &&
-                isWeatherConditionValid(catchDto.getWeatherCondition()) &&
-                isAirTemperatureValid(catchDto.getAirTemperature()) &&
-                isWaterTemperatureValid(catchDto.getWaterTemperature()) &&
-                isWindSpeedValid(catchDto.getWindSpeed()) &&
-                isTripDtoValid(catchDto.getTrip());
-    }
-
-    private boolean isTimeValid(LocalTime time) { return time != null; }
-
-    private boolean isSpeciesValid(String species) {
-        if (species == null || species.isEmpty()) {
-            return false;
-        }
-
-        // Letters and spaces only
-        String regex = "^[a-zA-Z ]*$";
-
-        return species.matches(regex) && species.length() <= 50;
-    }
-
-    private boolean isLureOrBaitValid(String lureOrBait) {
-        if (lureOrBait == null || lureOrBait.isEmpty()) {
-            return false;
-        }
-
-        // Letters and spaces only
-        String regex = "^[a-zA-Z ]*$";
-
-        return lureOrBait.matches(regex) && lureOrBait.length() <= 50;
-    }
-
-    private boolean isCoordinatesValid(Double latitude, Double longitude) {
-        if(latitude == null || longitude == null) {
-            return false;
-        }
-
-        boolean isLatitudeValid = false;
-        boolean isLongitudeValid = false;
-
-        if(latitude >= -90 && latitude <= 90) {
-            isLatitudeValid = true;
-        }
-
-        if(longitude >= -180 && longitude <= 180) {
-            isLongitudeValid = true;
-        }
-
-        return isLatitudeValid && isLongitudeValid;
-    }
-
-    private boolean isWeatherConditionValid(String weatherCondition) {
-        if (weatherCondition == null || weatherCondition.isEmpty()) {
-            return false;
-        }
-
-        // Letters and spaces only
-        String regex = "^[a-zA-Z ]*$";
-
-        return weatherCondition.matches(regex) && weatherCondition.length() <= 25;
-    }
-
-    private boolean isAirTemperatureValid(Integer airTemperature) {
-        if (airTemperature == null) {
-            return false;
-        }
-
-        return airTemperature >= -50 && airTemperature <= 150;
-    }
-
-    private boolean isWaterTemperatureValid(Integer waterTemperature) {
-        if (waterTemperature == null) {
-            return false;
-        }
-
-        return waterTemperature >= -50 && waterTemperature <= 150;
-    }
-
-    private boolean isWindSpeedValid(Integer airTemperature) {
-        if (airTemperature == null) {
-            return false;
-        }
-
-        return airTemperature >= 0 && airTemperature <= 100;
-    }
-
-    private boolean isTripDtoValid(TripDto tripDto) { return tripDto.getTripId() != null; }
 }

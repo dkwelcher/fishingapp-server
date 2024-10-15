@@ -1,8 +1,8 @@
 package com.fishinglog.fishingapp.services.auth;
 
 import com.fishinglog.fishingapp.domain.Role;
+import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
 import com.fishinglog.fishingapp.domain.auth.AuthenticationResponse;
-import com.fishinglog.fishingapp.domain.auth.AuthenticationRequest;
 import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.repositories.UserRepository;
@@ -52,7 +52,7 @@ public class AuthenticationService {
      * @param request The authentication request containing the user's credentials.
      * @return An {@link AuthenticationResponse} containing the user's JWT token along with user details.
      */
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

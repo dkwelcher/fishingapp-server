@@ -1,6 +1,6 @@
 package com.fishinglog.fishingapp.controllers;
 
-import com.fishinglog.fishingapp.domain.auth.AuthenticationRequest;
+import com.fishinglog.fishingapp.domain.auth.AuthenticationRequestDto;
 import com.fishinglog.fishingapp.domain.auth.AuthenticationResponse;
 import com.fishinglog.fishingapp.domain.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;
@@ -45,7 +45,7 @@ public class AuthenticationController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request) {
+            @RequestBody AuthenticationRequestDto request) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 }

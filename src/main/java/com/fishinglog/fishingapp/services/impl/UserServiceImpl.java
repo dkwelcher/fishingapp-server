@@ -25,14 +25,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    private TripRepository tripRepository;
+    private final TripRepository tripRepository;
+
+    private final CatchRepository catchRepository;
 
     @Autowired
-    private CatchRepository catchRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, TripRepository tripRepository, CatchRepository catchRepository) {
         this.userRepository = userRepository;
+        this.tripRepository = tripRepository;
+        this.catchRepository = catchRepository;
     }
 
     /**

@@ -8,6 +8,7 @@ import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ public class TripController {
 
     private final OwnershipService ownershipService;
 
+    @Autowired
     public TripController(TripService tripService, Mapper<TripEntity, TripDto> tripMapper, OwnershipService ownershipService) {
         this.tripService = tripService;
         this.tripMapper = tripMapper;

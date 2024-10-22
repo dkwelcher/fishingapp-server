@@ -8,6 +8,7 @@ import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class CatchController {
 
     private final OwnershipService ownershipService;
 
+    @Autowired
     public CatchController(CatchService catchService, Mapper<CatchEntity, CatchDto> catchMapper, OwnershipService ownershipService) {
         this.catchService = catchService;
         this.catchMapper = catchMapper;

@@ -19,11 +19,15 @@ import java.util.List;
 @Service
 public class WeatherServiceImpl implements WeatherService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Value("${api.key}")
     private String apiKey;
+
+    @Autowired
+    public WeatherServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     /**
      * Retrieves the current weather conditions for a specific latitude and longitude.

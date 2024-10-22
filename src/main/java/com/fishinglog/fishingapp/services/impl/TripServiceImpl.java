@@ -26,16 +26,18 @@ public class TripServiceImpl implements TripService {
 
     private final TripRepository tripRepository;
 
-    @Autowired
-    private CatchRepository catchRepository;
+    private final CatchRepository catchRepository;
 
     /**
      * Constructs a TripServiceImpl with the necessary trip repository.
      *
-     * @param tripRepository The repository used for trip entity persistence.
+     * @param tripRepository  The repository used for trip entity persistence.
+     * @param catchRepository The repository used for catch entity persistence.
      */
-    public TripServiceImpl(TripRepository tripRepository) {
+    @Autowired
+    public TripServiceImpl(TripRepository tripRepository, CatchRepository catchRepository) {
         this.tripRepository = tripRepository;
+        this.catchRepository = catchRepository;
     }
 
     /**

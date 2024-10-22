@@ -5,7 +5,7 @@ import com.fishinglog.fishingapp.repositories.UserRepository;
 import com.fishinglog.fishingapp.services.auth.JwtService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,12 +18,17 @@ import java.util.Optional;
  * @since 2024-10-15
  */
 @Service
-@RequiredArgsConstructor
 public class OwnershipServiceImpl implements OwnershipService {
 
     private final UserRepository userRepository;
 
     private final JwtService jwtService;
+
+    @Autowired
+    public OwnershipServiceImpl(UserRepository userRepository, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
 
     public boolean doesRequestUsernameMatchTokenUsername(Long userId, HttpServletRequest request) {
         Optional<UserEntity> userEntity = userRepository.findById(userId);

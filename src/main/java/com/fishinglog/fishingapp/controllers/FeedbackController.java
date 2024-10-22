@@ -5,6 +5,7 @@ import com.fishinglog.fishingapp.services.FeedbackService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class FeedbackController {
 
     private final OwnershipService ownershipService;
 
+    @Autowired
     public FeedbackController(FeedbackService feedbackService, OwnershipService ownershipService) {
         this.feedbackService = feedbackService;
         this.ownershipService = ownershipService;

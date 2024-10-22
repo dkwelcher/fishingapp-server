@@ -5,7 +5,7 @@ import com.fishinglog.fishingapp.domain.dto.auth.AuthenticationResponseDto;
 import com.fishinglog.fishingapp.domain.dto.auth.RegisterRequestDto;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService service;
+
+    @Autowired
+    public AuthenticationController(AuthenticationService service) {
+        this.service = service;
+    }
 
     /**
      * Registers a new user with the given request details.

@@ -3,6 +3,7 @@ package com.fishinglog.fishingapp.services.impl;
 import com.fishinglog.fishingapp.domain.entities.CatchEntity;
 import com.fishinglog.fishingapp.repositories.CatchRepository;
 import com.fishinglog.fishingapp.services.CatchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,14 @@ import java.util.stream.StreamSupport;
 @Service
 public class CatchServiceImpl implements CatchService {
 
-    private CatchRepository catchRepository;
+    private final CatchRepository catchRepository;
 
     /**
      * Constructs a service instance with the necessary catch repository.
      *
      * @param catchRepository The repository used for catch entity persistence.
      */
+    @Autowired
     public CatchServiceImpl(CatchRepository catchRepository) {
         this.catchRepository = catchRepository;
     }

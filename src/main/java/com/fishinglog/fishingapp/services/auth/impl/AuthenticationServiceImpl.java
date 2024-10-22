@@ -8,7 +8,7 @@ import com.fishinglog.fishingapp.domain.entities.UserEntity;
 import com.fishinglog.fishingapp.repositories.UserRepository;
 import com.fishinglog.fishingapp.services.auth.AuthenticationService;
 import com.fishinglog.fishingapp.services.auth.JwtService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +21,20 @@ import org.springframework.stereotype.Service;
  * @since 2024-10-15
  */
 @Service
-@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public AuthenticationServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public AuthenticationResponseDto register(RegisterRequestDto request) {
         var user = UserEntity.builder()

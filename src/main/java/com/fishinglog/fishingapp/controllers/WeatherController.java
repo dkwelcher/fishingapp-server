@@ -5,6 +5,7 @@ import com.fishinglog.fishingapp.services.WeatherService;
 import com.fishinglog.fishingapp.services.auth.OwnershipService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ public class WeatherController {
 
     private final OwnershipService ownershipService;
 
+    @Autowired
     public WeatherController(WeatherService weatherService, OwnershipService ownershipService) {
         this.weatherService = weatherService;
         this.ownershipService = ownershipService;
